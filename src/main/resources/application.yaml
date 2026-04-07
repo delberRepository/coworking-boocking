@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: coworking-booking
+  datasource:
+    url: jdbc:postgresql://localhost:5430/coworking
+    username: postgres
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  spring:
+    jackson:
+      serialization:
+        indent-output: true # Esta sí existe en la lista que te dio el error
