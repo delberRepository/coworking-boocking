@@ -8,11 +8,11 @@ import jakarta.persistence.*;
 public class Resource {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     @Enumerated(EnumType.STRING)
     private ResourceType type;
     //ROOM ,STUDIO ,SERVICE
     private Integer capacity;
-    private boolean active;
+    private Boolean active;
 }
