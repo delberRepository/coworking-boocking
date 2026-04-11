@@ -1,7 +1,11 @@
 package com.delber.coworking_booking.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Table(name="Recursos")
 @Entity
 

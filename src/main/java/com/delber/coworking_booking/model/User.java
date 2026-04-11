@@ -3,14 +3,19 @@ package com.delber.coworking_booking.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 
-
-    @Entity
+@Entity
     @Table(name = "Usuarios")
     @Getter
     @Setter
-    public class User {
+    public class User implements UserDetails {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +28,44 @@ import lombok.Setter;
 
         @Enumerated(EnumType.STRING)
         private Role role;
+
+    // 🔐 AUTHORITIES (CLAVE)
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    // 🔑 USERNAME (Spring usa esto como identificador)
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    // 🔑 PASSWORD
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    // ⚙️ FLAGS (puedes dejarlos así por ahora)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
     }
 

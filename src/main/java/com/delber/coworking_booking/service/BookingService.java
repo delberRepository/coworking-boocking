@@ -9,19 +9,21 @@ import com.delber.coworking_booking.repository.IResourcesRepository;
 import com.delber.coworking_booking.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Service
+@RequiredArgsConstructor
 public class BookingService {
-    IBookingRepository br;
-    IUserRepository ur;
-    IResourcesRepository rr;
+    private final IBookingRepository br;
+    private final IUserRepository ur;
+    private final IResourcesRepository rr;
 
     @Transactional
     public Booking createBooking(
