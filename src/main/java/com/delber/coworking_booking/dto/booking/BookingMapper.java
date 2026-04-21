@@ -11,16 +11,15 @@ import org.springframework.stereotype.Component;
 public class BookingMapper {
 
     public BookingResponse toResponse(Booking booking) {
-        BookingResponse dto = new BookingResponse();
 
-        dto.setId(booking.getId());
-        dto.setResourceId(booking.getResource().getId());
-        dto.setResourceName(booking.getResource().getName());
-        dto.setStartTime(booking.getStartTime());
-        dto.setEndTime(booking.getEndTime());
-        dto.setStatus(booking.getStatus().name());
-        dto.setUserId(booking.getUser().getId());
-
-        return dto;
+        return new BookingResponse(
+                booking.getId(),
+                booking.getResource().getId(),
+                booking.getResource().getName(),
+                booking.getStartTime(),
+                booking.getEndTime(),
+                booking.getStatus().name(),
+                booking.getUser().getId()
+        );
     }
 }

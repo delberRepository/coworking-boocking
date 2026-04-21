@@ -3,15 +3,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-@Getter
-@Setter
-public class BookingResponse {
 
-    private Long id;
-    private Long resourceId;
-    private String resourceName;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private String status;
-    private Long userId;
-}
+public record BookingResponse (
+        Long id,
+        Long resourceId,
+        String resourceName,
+        LocalDateTime startTime,
+        LocalDateTime endTime,
+        String status,
+        Long userId
+) {}

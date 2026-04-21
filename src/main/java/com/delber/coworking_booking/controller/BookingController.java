@@ -38,9 +38,9 @@ public class BookingController {
 //en el propio metodo del servicio se puede ver que llama al metodo save del repobooking
         Booking booking = bs.createBooking(
                 user.getId(),
-                request.getResourceId(),
-                request.getStart(),
-                request.getEnd()
+                request.resourceId(),
+                request.start(),
+                request.end()
         );
 
         return ResponseEntity.ok(bm.toResponse(booking));

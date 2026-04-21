@@ -6,6 +6,7 @@ import com.delber.coworking_booking.repository.IResourcesRepository;
 import com.delber.coworking_booking.repository.IUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ private IResourcesRepository rr;
 private IUserRepository ur;
 
 @Transactional
+@PreAuthorize("hasRole('ADMIN')")
 public Resource createResources(String name, ResourceType tipo, Boolean active, int capacidad){
     Resource recurso= new Resource();
 
