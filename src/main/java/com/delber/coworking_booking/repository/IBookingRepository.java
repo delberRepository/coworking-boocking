@@ -20,6 +20,24 @@ public interface IBookingRepository extends JpaRepository<Booking, Long> {
             LocalDateTime start,
             LocalDateTime end
     );
+
+    @Query("""
+        SELECT b FROM Booking b
+        WHERE b.resource.id = :resourceId
+        AND b.id <> :bookingId
+        AND b.status = 'CONFIRMED'
+        AND (
+            :start < b.endTime AND :end > b.startTime
+        )
+    """)
+    List<Booking> findOverlappingBookingsExcludingCurrent(
+            Long resourceId,
+            Long bookingId,
+            LocalDateTime start,
+            LocalDateTime end
+    );
+
     List<Booking> findByUserId(Long userId);
     List<Booking> findByResourceId(Long resourceId);
+
 }

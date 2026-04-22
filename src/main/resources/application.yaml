@@ -3,9 +3,9 @@ spring:
     name: coworking-booking
 
   datasource:
-    url: jdbc:postgresql://ep-plain-salad-algzr4df-pooler.c-3.eu-central-1.aws.neon.tech:5432/neondb?sslmode=require
-    username: neondb_owner
-    password: npg_P4ef9VtmBhuI # ¡RECUERDA CAMBIARLA POR SEGURIDAD!
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD} # ¡RECUERDA CAMBIARLA POR SEGURIDAD!
     driver-class-name: org.postgresql.Driver
 
   jpa:

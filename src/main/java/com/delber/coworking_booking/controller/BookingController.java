@@ -45,6 +45,27 @@ public class BookingController {
 
         return ResponseEntity.ok(bm.toResponse(booking));
     }
+    //esto siempre para actualizar
+    @PutMapping("/{id}")
+    public ResponseEntity<BookingResponse> updateBooking(
+            @PathVariable Long id,
+            @RequestBody CreateBookingRequest request,
+            Authentication authentication
+    ) {
+
+        User user = (User) authentication.getPrincipal();
+
+
+        Booking booking = bs.updateBooking(
+                id,
+                request.resourceId(),
+                user.getId(),
+                request.start(),
+                request.end()
+        );
+
+        return ResponseEntity.ok(bm.toResponse(booking));
+    }
 
     // 🔹 GET MY BOOKINGS
     @GetMapping("/me")

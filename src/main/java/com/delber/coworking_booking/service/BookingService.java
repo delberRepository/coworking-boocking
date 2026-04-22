@@ -7,10 +7,7 @@ import com.delber.coworking_booking.model.User;
 import com.delber.coworking_booking.repository.IBookingRepository;
 import com.delber.coworking_booking.repository.IResourcesRepository;
 import com.delber.coworking_booking.repository.IUserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +21,7 @@ public class BookingService {
     private final IBookingRepository br;
     private final IUserRepository ur;
     private final IResourcesRepository rr;
+
 
     @Transactional
     public Booking createBooking(
@@ -63,6 +61,37 @@ public class BookingService {
 
         return br.save(booking);
     }
+
+    @Transactional
+    public Booking updateBooking(Long bookingId, Long resourceId, Long userId, LocalDateTime start, LocalDateTime end) {
+        Booking booking = br.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+
+        if (!booking.getUser().getId().equals(userId)) {
+            throw new RuntimeException("No autorizado");
+        }
+
+        if (start.isAfter(end) || start.isEqual(end)) {
+            throw new RuntimeException("Rango de tiempo invalido");
+        }
+
+        Resource resource = rr.findById(resourceId)
+                .orElseThrow(() -> new RuntimeException("Recurso no encontrado"));
+
+        List<Booking> solapamiento = br.findOverlappingBookingsExcludingCurrent(resourceId, bookingId, start, end);
+
+        if (!solapamiento.isEmpty()) {
+            throw new RuntimeException("Franja horaria no disponible");
+        }
+
+        booking.setResource(resource);
+        booking.setStartTime(start);
+        booking.setEndTime(end);
+        booking.setStatus(BookingStatus.CONFIRMED);
+
+        return br.save(booking);
+    }
+
     @Transactional(readOnly = true)
     public List<Booking> getMyBookings(Long userId) {
         return br.findByUserId(userId);
@@ -71,6 +100,7 @@ public class BookingService {
     public List<Booking> getBookingsByResource(Long resourceId) {
         return br.findByResourceId(resourceId);
     }
+
     @Transactional
     public void cancelBooking(Long bookingId, Long userId) {
 
