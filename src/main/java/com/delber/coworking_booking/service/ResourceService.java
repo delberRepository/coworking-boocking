@@ -34,7 +34,7 @@ public Resource createResources(String name, ResourceType tipo, Boolean active, 
 }
 
 @Transactional
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasAnyRole('ADMIN')")
 public Resource updateResources(Long resourceId, String name, ResourceType tipo, Boolean active, int capacidad){
     Resource recurso = rr.findById(resourceId)
             .orElseThrow(() -> new RuntimeException("Recurso no encontrado"));

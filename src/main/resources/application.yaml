@@ -5,7 +5,7 @@ spring:
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
-    password: ${DB_PASSWORD} # ¡RECUERDA CAMBIARLA POR SEGURIDAD!
+    password: ${DB_PASSWORD} 
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -20,3 +20,9 @@ spring:
   jackson: # Ya no lleva "spring:" delante porque ya estamos dentro del bloque spring
     serialization:
       indent-output: true
+
+springdoc: # en true para ver los endpoint con swagger
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

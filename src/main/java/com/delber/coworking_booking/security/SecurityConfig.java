@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +31,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/", "/login", "/css/**", "/js/**").permitAll()
+                        //quitar en produccion vvvv
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/resources/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/resources/**").hasRole("ADMIN")
                         .requestMatchers("/bookings/**").authenticated()
                         .requestMatchers("/test/admin").hasRole("ADMIN")
                         .requestMatchers("/test/user").hasAnyRole("USER", "ADMIN")
@@ -39,7 +45,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .userDetailsService(userDetailsService) // 🔥 MUY IMPORTANTE
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -55,4 +61,3 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
-

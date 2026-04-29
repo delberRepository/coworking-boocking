@@ -6,6 +6,8 @@ import com.delber.coworking_booking.dto.booking.CreateBookingRequest;
 import com.delber.coworking_booking.model.Booking;
 import com.delber.coworking_booking.model.User;
 import com.delber.coworking_booking.service.BookingService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/bookings")
+@SecurityRequirement(name = "bearerAuth")
 public class BookingController {
 
     private final BookingService bs;
@@ -28,7 +31,7 @@ public class BookingController {
     // 🔹 CREATE BOOKING
     @PostMapping
     public ResponseEntity<BookingResponse> createBooking(
-            @RequestBody CreateBookingRequest request,
+            @Valid @RequestBody CreateBookingRequest request,
             Authentication authentication
     ) {
 //aqui se valida el user
@@ -49,7 +52,7 @@ public class BookingController {
     @PutMapping("/{id}")
     public ResponseEntity<BookingResponse> updateBooking(
             @PathVariable Long id,
-            @RequestBody CreateBookingRequest request,
+            @Valid @RequestBody CreateBookingRequest request,
             Authentication authentication
     ) {
 

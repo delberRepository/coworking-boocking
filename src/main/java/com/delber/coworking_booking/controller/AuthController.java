@@ -6,6 +6,7 @@ import com.delber.coworking_booking.model.Role;
 import com.delber.coworking_booking.model.User;
 import com.delber.coworking_booking.repository.IUserRepository;
 import com.delber.coworking_booking.service.auth.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
+    public String register(@Valid @RequestBody RegisterRequest request) {
 
 
         User user = new User();
@@ -36,7 +37,7 @@ public class AuthController {
         return "Usuario registrado correctamente";
     }
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public String login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
 }

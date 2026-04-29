@@ -5,6 +5,8 @@ import com.delber.coworking_booking.dto.resources.ResourceResponse;
 import com.delber.coworking_booking.model.Resource;
 import com.delber.coworking_booking.model.ResourceType;
 import com.delber.coworking_booking.service.ResourceService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/resources")
+@SecurityRequirement(name = "bearerAuth")
 public class ResourcesController {
 
     private final ResourceService rs;
@@ -27,7 +30,7 @@ public class ResourcesController {
     }
 
     @PostMapping
-    public ResponseEntity<ResourceResponse> createResource(@RequestBody CreateResourceRequest request) {
+    public ResponseEntity<ResourceResponse> createResource(@Valid @RequestBody CreateResourceRequest request) {
         Resource resource = rs.createResources(
                 request.name(),
                 parseType(request.type()),
@@ -41,7 +44,7 @@ public class ResourcesController {
     @PutMapping("/{id}")
     public ResponseEntity<ResourceResponse> updateResource(
             @PathVariable Long id,
-            @RequestBody CreateResourceRequest request
+            @Valid @RequestBody CreateResourceRequest request
     ) {
         Resource resource = rs.updateResources(
                 id,
