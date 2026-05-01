@@ -92,11 +92,11 @@ class ResourcesControllerTest {
         Resource resource = new Resource();
         resource.setId(3L);
         resource.setName("Sala Norte");
-        resource.setType(ResourceType.SALA_DANZA);
+        resource.setType(ResourceType.PRANATURE);
         resource.setCapacity(10);
         resource.setActive(true);
 
-        when(resourceService.createResources(eq("Sala Norte"), eq(ResourceType.SALA_DANZA), eq(true), eq(10)))
+        when(resourceService.createResources(eq("Sala Norte"), eq(ResourceType.PRANATURE), eq(true), eq(10)))
                 .thenReturn(resource);
 
         mockMvc.perform(post("/resources")
@@ -105,7 +105,7 @@ class ResourcesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(3))
                 .andExpect(jsonPath("$.name").value("Sala Norte"))
-                .andExpect(jsonPath("$.type").value("SALA_DANZA"))
+                .andExpect(jsonPath("$.type").value("PRANATURE"))
                 .andExpect(jsonPath("$.capacity").value(10))
                 .andExpect(jsonPath("$.active").value(true));
     }

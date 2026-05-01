@@ -116,7 +116,7 @@ class BookingControllerTest {
         User user = new User();
         resource.setId(1L);
         resource.setName("Sala 1");
-        resource.setType(ResourceType.SALA_DANZA);
+        resource.setType(ResourceType.PRANATURE);
         user.setId(2L);
         booking.setId(7L);
         booking.setResource(resource);

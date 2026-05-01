@@ -279,7 +279,7 @@ class BookingServiceTest {
         Resource resource = new Resource();
         resource.setId(id);
         resource.setName("Sala 1");
-        resource.setType(ResourceType.SALA_DANZA);
+        resource.setType(ResourceType.PRANATURE);
         resource.setCapacity(8);
         resource.setActive(true);
         return resource;

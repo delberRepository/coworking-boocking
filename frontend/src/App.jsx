@@ -213,13 +213,14 @@ function App() {
     <main className="app-shell">
       <section className="hero-band">
         <div>
-          <p className="eyebrow">Coworking Booking</p>
-          <h1>Cliente React conectado al API REST de Spring</h1>
-          <p className="hero-copy">
-            Login con JWT, consulta de recursos y gestion basica de reservas.
-          </p>
-        </div>
-        <div className="api-chip">API: {API_BASE_URL}</div>
+          <p className="eyebrow">Co-working Booking</p>
+          <h1>Bienvenido a nuestro sistema de reservas </h1>
+          <h1>Pranature/Vindaloo</h1>
+        <p className="hero-copy">
+          Introduce tus datos para consulta de recursos y gestion de reservas.
+        </p>
+      </div>
+      <div className="api-chip">API: {API_BASE_URL}</div>
       </section>
 
       {!token ? (
