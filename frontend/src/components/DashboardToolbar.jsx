@@ -3,7 +3,7 @@ function DashboardToolbar({ onReload, onLogout }) {
     <section className="toolbar">
       <div>
         <p className="eyebrow">Sesion activa</p>
-        <p className="toolbar-text">Token JWT guardado en localStorage</p>
+          {/*<p className="toolbar-text">Token JWT guardado en localStorage</p>*/}
       </div>
       <div className="toolbar-actions">
         <button type="button" className="secondary-button" onClick={onReload}>
