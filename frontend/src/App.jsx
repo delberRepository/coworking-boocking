@@ -10,6 +10,7 @@ import { apiRequest, API_BASE_URL } from './lib/api'
 import { toIsoDateTime } from './lib/date'
 
 const TOKEN_KEY = 'coworking-booking-token'
+const EMAIL_KEY = 'coworking-booking-email'
 
 const emptyAuthForm = {
   email: '',
@@ -27,6 +28,7 @@ function App() {
   const [authForm, setAuthForm] = useState(emptyAuthForm)
   const [bookingForm, setBookingForm] = useState(emptyBookingForm)
   const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY) ?? '')
+  const [loginEmail, setLoginEmail] = useState(() => localStorage.getItem(EMAIL_KEY) ?? '')
   const [resources, setResources] = useState([])
   const [bookings, setBookings] = useState([])
   const [authMessage, setAuthMessage] = useState('')
@@ -44,6 +46,7 @@ function App() {
     if (!token) {
       setResources([])
       setBookings([])
+      localStorage.removeItem(TOKEN_KEY)
       return
     }
 
@@ -111,6 +114,8 @@ function App() {
       })
 
       setToken(loginToken)
+      setLoginEmail(authForm.email)
+      localStorage.setItem(EMAIL_KEY, authForm.email)
       setAuthMessage('Sesion iniciada')
       setAuthForm(emptyAuthForm)
     } catch (error) {
@@ -167,15 +172,16 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(EMAIL_KEY)
     setToken('')
+    setLoginEmail('')
     setAuthMessage('')
     setAppMessage('')
   }
 
   return (
     <main className="app-shell">
-      {/*le paso la variable boolean para que haga validaciones*/}
-      <HeroBanner apiBaseUrl={API_BASE_URL} isAuthenticated={Boolean(token)} />
+      <HeroBanner login={loginEmail} isAuthenticated={Boolean(token)} />
 
       {!token ? (
         <AuthPanel

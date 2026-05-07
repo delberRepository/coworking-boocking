@@ -1,6 +1,6 @@
 import logo from '../assets/1.jpg'
 
-function HeroBanner({ apiBaseUrl, isAuthenticated }) {
+function HeroBanner({login,  isAuthenticated }) {
   return (
 
     <section className="hero-band">
@@ -14,10 +14,12 @@ function HeroBanner({ apiBaseUrl, isAuthenticated }) {
             </p>
            )}
       </div>
+        {isAuthenticated && (
         <div className="api-chip">
-            API: {apiBaseUrl}
+             {login}
             <img src={logo} alt="logo" className="hero-logo"/>
         </div>
+            )}
     </section>
   )
 }
