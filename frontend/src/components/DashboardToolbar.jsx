@@ -1,4 +1,4 @@
-function DashboardToolbar({ onReload, onLogout }) {
+const DashboardToolbar = ({ onReload, onLogout }) => {
   return (
     <section className="toolbar">
       <div>

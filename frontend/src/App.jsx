@@ -23,7 +23,7 @@ const emptyBookingForm = {
   end: '',
 }
 
-function App() {
+const App = () => {
   const [mode, setMode] = useState('login')
   const [authForm, setAuthForm] = useState(emptyAuthForm)
   const [bookingForm, setBookingForm] = useState(emptyBookingForm)
@@ -181,7 +181,10 @@ function App() {
 
   return (
     <main className="app-shell">
-      <HeroBanner login={loginEmail} isAuthenticated={Boolean(token)} />
+      <HeroBanner
+          login={loginEmail}
+          isAuthenticated={Boolean(token)}
+      />
 
       {!token ? (
         <AuthPanel

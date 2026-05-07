@@ -1,4 +1,4 @@
-function ResourcesPanel({ resources, dataLoading }) {
+const ResourcesPanel = ({ resources, dataLoading }) => {
   return (
     <div className="panel">
       <div className="panel-header">

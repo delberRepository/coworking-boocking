@@ -1,11 +1,11 @@
-function BookingFormPanel({
+const BookingFormPanel = ({
   resources,
   bookingForm,
   bookingLoading,
   selectedResource,
   onFieldChange,
   onSubmit,
-}) {
+}) => {
   return (
     <div className="panel">
       <div className="panel-header">

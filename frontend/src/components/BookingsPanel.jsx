@@ -1,6 +1,6 @@
 import { formatDateTime } from '../lib/date'
 
-function BookingsPanel({ bookings, dataLoading, onCancelBooking }) {
+const BookingsPanel = ({ bookings, dataLoading, onCancelBooking }) => {
   return (
     <section className="panel">
       <div className="panel-header">

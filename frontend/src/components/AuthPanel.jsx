@@ -1,4 +1,4 @@
-function AuthPanel({
+const AuthPanel = ({
   mode,
   authForm,
   authLoading,
@@ -6,7 +6,7 @@ function AuthPanel({
   onModeChange,
   onFieldChange,
   onSubmit,
-}) {
+}) => {
   return (
     <section className="panel auth-panel">
       <div className="segmented-control" role="tablist" aria-label="Modo de acceso">
