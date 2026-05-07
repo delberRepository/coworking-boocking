@@ -174,7 +174,8 @@ function App() {
 
   return (
     <main className="app-shell">
-      <HeroBanner apiBaseUrl={API_BASE_URL} />
+      {/*le paso la variable boolean para que haga validaciones*/}
+      <HeroBanner apiBaseUrl={API_BASE_URL} isAuthenticated={Boolean(token)} />
 
       {!token ? (
         <AuthPanel
