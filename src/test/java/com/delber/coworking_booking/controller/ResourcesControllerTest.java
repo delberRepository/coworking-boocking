@@ -83,7 +83,7 @@ class ResourcesControllerTest {
         String body = """
                 {
                   "name": "Sala Norte",
-                  "type": "SALA_DANZA",
+                  "type": "PRANATURE",
                   "capacity": 10,
                   "active": true
                 }

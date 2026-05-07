@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
+import AuthPanel from './components/AuthPanel'
+import BookingFormPanel from './components/BookingFormPanel'
+import BookingsPanel from './components/BookingsPanel'
+import DashboardToolbar from './components/DashboardToolbar'
+import HeroBanner from './components/HeroBanner'
+import ResourcesPanel from './components/ResourcesPanel'
+import { apiRequest, API_BASE_URL } from './lib/api'
+import { toIsoDateTime } from './lib/date'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
 const TOKEN_KEY = 'coworking-booking-token'
 
 const emptyAuthForm = {
@@ -13,50 +20,6 @@ const emptyBookingForm = {
   resourceId: '',
   start: '',
   end: '',
-}
-
-async function apiRequest(path, { method = 'GET', token, body } = {}) {
-  const headers = {}
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`
-  }
-
-  if (body !== undefined) {
-    headers['Content-Type'] = 'application/json'
-  }
-
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    method,
-    headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  })
-
-  const contentType = response.headers.get('content-type') ?? ''
-  const payload = contentType.includes('application/json')
-    ? await response.json()
-    : await response.text()
-
-  if (!response.ok) {
-    const detail =
-      typeof payload === 'string'
-        ? payload
-        : payload.message || payload.error || JSON.stringify(payload)
-    throw new Error(detail || 'La peticion ha fallado')
-  }
-
-  return payload
-}
-
-function toIsoDateTime(value) {
-  return value ? new Date(value).toISOString() : null
-}
-
-function formatDateTime(value) {
-  return new Intl.DateTimeFormat('es-ES', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(new Date(value))
 }
 
 function App() {
@@ -211,219 +174,41 @@ function App() {
 
   return (
     <main className="app-shell">
-      <section className="hero-band">
-        <div>
-          <p className="eyebrow">Co-working Booking</p>
-          <h1>Bienvenido a nuestro sistema de reservas </h1>
-          <h1>Pranature/Vindaloo</h1>
-        <p className="hero-copy">
-          Introduce tus datos para consulta de recursos y gestion de reservas.
-        </p>
-      </div>
-      <div className="api-chip">API: {API_BASE_URL}</div>
-      </section>
+      <HeroBanner apiBaseUrl={API_BASE_URL} />
 
       {!token ? (
-        <section className="panel auth-panel">
-          <div className="segmented-control" role="tablist" aria-label="Modo de acceso">
-            <button
-              type="button"
-              className={mode === 'login' ? 'active' : ''}
-              onClick={() => setMode('login')}
-            >
-              Login
-            </button>
-            <button
-              type="button"
-              className={mode === 'register' ? 'active' : ''}
-              onClick={() => setMode('register')}
-            >
-              Registro
-            </button>
-          </div>
-
-          <form className="stack" onSubmit={handleAuthSubmit}>
-            <label>
-              <span>Email</span>
-              <input
-                name="email"
-                type="email"
-                value={authForm.email}
-                onChange={handleAuthFieldChange}
-                placeholder="usuario@empresa.com"
-                required
-              />
-            </label>
-
-            <label>
-              <span>Contrasena</span>
-              <input
-                name="password"
-                type="password"
-                value={authForm.password}
-                onChange={handleAuthFieldChange}
-                placeholder="Minimo 6 caracteres"
-                required
-              />
-            </label>
-
-            <button type="submit" className="primary-button" disabled={authLoading}>
-              {authLoading
-                ? 'Enviando...'
-                : mode === 'login'
-                  ? 'Entrar'
-                  : 'Crear cuenta'}
-            </button>
-          </form>
-
-          {authMessage ? <p className="status-line">{authMessage}</p> : null}
-        </section>
+        <AuthPanel
+          mode={mode}
+          authForm={authForm}
+          authLoading={authLoading}
+          authMessage={authMessage}
+          onModeChange={setMode}
+          onFieldChange={handleAuthFieldChange}
+          onSubmit={handleAuthSubmit}
+        />
       ) : (
         <>
-          <section className="toolbar">
-            <div>
-              <p className="eyebrow">Sesion activa</p>
-              <p className="toolbar-text">Token JWT guardado en localStorage</p>
-            </div>
-            <div className="toolbar-actions">
-              <button type="button" className="secondary-button" onClick={() => loadDashboard()}>
-                Recargar
-              </button>
-              <button type="button" className="secondary-button" onClick={handleLogout}>
-                Salir
-              </button>
-            </div>
-          </section>
+          <DashboardToolbar onReload={() => loadDashboard()} onLogout={handleLogout} />
 
           {appMessage ? <p className="status-line">{appMessage}</p> : null}
 
           <section className="dashboard-grid">
-            <div className="panel">
-              <div className="panel-header">
-                <div>
-                  <p className="eyebrow">Recursos</p>
-                  <h2>Disponibles para reservar</h2>
-                </div>
-                {dataLoading ? <span className="muted">Cargando...</span> : null}
-              </div>
-
-              <div className="resource-list">
-                {resources.map((resource) => (
-                  <article key={resource.id} className="resource-item">
-                    <div>
-                      <h3>{resource.name}</h3>
-                      <p>
-                        {resource.type} · capacidad {resource.capacity}
-                      </p>
-                    </div>
-                    <span className={resource.active ? 'pill active' : 'pill inactive'}>
-                      {resource.active ? 'Activo' : 'Inactivo'}
-                    </span>
-                  </article>
-                ))}
-                {!dataLoading && resources.length === 0 ? (
-                  <p className="empty-state">No hay recursos visibles para este usuario.</p>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="panel">
-              <div className="panel-header">
-                <div>
-                  <p className="eyebrow">Nueva reserva</p>
-                  <h2>Crear booking</h2>
-                </div>
-              </div>
-
-              <form className="stack" onSubmit={handleCreateBooking}>
-                <label>
-                  <span>Recurso</span>
-                  <select
-                    name="resourceId"
-                    value={bookingForm.resourceId}
-                    onChange={handleBookingFieldChange}
-                    required
-                  >
-                    <option value="" disabled>
-                      Selecciona un recurso
-                    </option>
-                    {resources
-                      .filter((resource) => resource.active)
-                      .map((resource) => (
-                        <option key={resource.id} value={resource.id}>
-                          {resource.name} ({resource.type})
-                        </option>
-                      ))}
-                  </select>
-                </label>
-
-                <label>
-                  <span>Inicio</span>
-                  <input
-                    name="start"
-                    type="datetime-local"
-                    value={bookingForm.start}
-                    onChange={handleBookingFieldChange}
-                    required
-                  />
-                </label>
-
-                <label>
-                  <span>Fin</span>
-                  <input
-                    name="end"
-                    type="datetime-local"
-                    value={bookingForm.end}
-                    onChange={handleBookingFieldChange}
-                    required
-                  />
-                </label>
-
-                <button type="submit" className="primary-button" disabled={bookingLoading}>
-                  {bookingLoading ? 'Guardando...' : 'Reservar'}
-                </button>
-              </form>
-
-              {selectedResource ? (
-                <p className="muted">
-                  Recurso seleccionado: {selectedResource.name} · {selectedResource.type}
-                </p>
-              ) : null}
-            </div>
+            <ResourcesPanel resources={resources} dataLoading={dataLoading} />
+            <BookingFormPanel
+              resources={resources}
+              bookingForm={bookingForm}
+              bookingLoading={bookingLoading}
+              selectedResource={selectedResource}
+              onFieldChange={handleBookingFieldChange}
+              onSubmit={handleCreateBooking}
+            />
           </section>
 
-          <section className="panel">
-            <div className="panel-header">
-              <div>
-                <p className="eyebrow">Mis reservas</p>
-                <h2>Bookings del usuario autenticado</h2>
-              </div>
-            </div>
-
-            <div className="booking-list">
-              {bookings.map((booking) => (
-                <article key={booking.id} className="booking-item">
-                  <div>
-                    <h3>{booking.resourceName}</h3>
-                    <p>
-                      {formatDateTime(booking.startTime)} - {formatDateTime(booking.endTime)}
-                    </p>
-                    <p className="muted">Estado: {booking.status}</p>
-                  </div>
-                  <button
-                    type="button"
-                    className="secondary-button"
-                    onClick={() => handleCancelBooking(booking.id)}
-                  >
-                    Cancelar
-                  </button>
-                </article>
-              ))}
-              {!dataLoading && bookings.length === 0 ? (
-                <p className="empty-state">Todavia no hay reservas para este usuario.</p>
-              ) : null}
-            </div>
-          </section>
+          <BookingsPanel
+            bookings={bookings}
+            dataLoading={dataLoading}
+            onCancelBooking={handleCancelBooking}
+          />
         </>
       )}
     </main>
