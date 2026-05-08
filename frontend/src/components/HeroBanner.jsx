@@ -5,7 +5,7 @@ const HeroBanner = ({ login, isAuthenticated }) => {
     <section className="hero-band">
       <div>
         <p className="eyebrow">Co-working Booking</p>
-        <h1>CO-WORKING PRANATURE & VINDALOO ESTUDIOS</h1>
+        <h1>ESTUDIO DE DANZA Y MÚSICA</h1>
         <h2>Realiza tus reservas</h2>
         {!isAuthenticated && (
           <p className="hero-copy">
