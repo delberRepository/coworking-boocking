@@ -67,6 +67,18 @@ Desarrollado con:
 - GET `/bookings/me`
 - DELETE `/bookings/{id}`
 
+### 📄 Documentación de API
+
+La API REST incluye documentación interactiva mediante Swagger/OpenAPI, permitiendo visualizar y probar los diferentes endpoints desde una interfaz gráfica sencilla.
+
+Gracias a Swagger es posible:
+
+- Consultar endpoints disponibles
+- Probar requests directamente desde el navegador
+- Visualizar parámetros y respuestas
+- Facilitar la integración frontend/backend
+
+
 ---
 
 # 🌐 Frontend
