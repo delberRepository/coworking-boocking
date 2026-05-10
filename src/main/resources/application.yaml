@@ -1,3 +1,6 @@
+server:
+  port: ${PORT:8080}
+
 spring:
   application:
     name: coworking-booking
@@ -30,3 +33,5 @@ springdoc: # en true para ver los endpoint con swagger
 app: #para poder comunicarse con react
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+  jwt:
+    secret: ${JWT_SECRET:mi_clave_super_segura_de_al_menos_32_caracteres_123}

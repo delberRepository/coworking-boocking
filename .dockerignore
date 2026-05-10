@@ -1,0 +1,7 @@
+.git
+.idea
+frontend
+target
+.DS_Store
+*.rtf
+*.pdf
