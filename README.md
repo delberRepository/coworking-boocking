@@ -1,7 +1,10 @@
 # Coworking Booking App
 
-Enlace a la App:
+Enlace a la App para cliente:
 https://coworking-booking-frontend.onrender.com
+
+Acceso a la Api Rest con Swagger:
+https://coworking-booking-api.onrender.com/swagger-ui/index.html
 
 Aplicación fullstack para la gestión de reservas de espacios y recursos en un entorno coworking.
 
