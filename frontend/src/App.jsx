@@ -36,6 +36,8 @@ const App = () => {
   const [authLoading, setAuthLoading] = useState(false)
   const [dataLoading, setDataLoading] = useState(false)
   const [bookingLoading, setBookingLoading] = useState(false)
+  const [backendReady, setBackendReady] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
 
   const selectedResource = useMemo(
     () => resources.find((resource) => String(resource.id) === bookingForm.resourceId),
@@ -53,6 +55,27 @@ const App = () => {
     localStorage.setItem(TOKEN_KEY, token)
     void loadDashboard(token)
   }, [token])
+
+  useEffect(() => {
+  async function wakeBackend() {
+    try {
+      await fetch(`${API_BASE_URL}/resources`, {
+        method: 'GET',
+      })
+
+      setBackendReady(true)
+    } catch (error) {
+      console.error('Backend waking up...', error)
+
+      setTimeout(wakeBackend, 3000)
+      return
+    } finally {
+      setInitialLoading(false)
+    }
+  }
+
+  wakeBackend()
+}, [])
 
   async function loadDashboard(currentToken = token) {
     setDataLoading(true)
@@ -178,6 +201,25 @@ const App = () => {
     setAuthMessage('')
     setAppMessage('')
   }
+  if (initialLoading || !backendReady) {
+  return (
+    <main className="loading-screen">
+      <div className="loading-content">
+        <h1>🚀 Preparando aplicación</h1>
+
+        <p>
+          El servidor se está iniciando.
+        </p>
+
+        <p>
+          La primera carga puede tardar unos segundos.
+        </p>
+
+        <div className="spinner"></div>
+      </div>
+    </main>
+  )
+}
 
   return (
     <main className="app-shell">
